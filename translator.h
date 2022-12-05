@@ -1,10 +1,6 @@
 #include<bits/stdc++.h>
-#include <algorithm>
-#include <cctype>
-#include <string>
 
 using namespace std;
-
 
 class Translator{
 
@@ -18,6 +14,7 @@ class Translator{
 			"cmc","cma","ral","rar","tcc","dac","tcs","stc",
 			"daa","kbp","dcl","src","fin"
 		};
+		vector <string> label_arr;
 
 	public:
 		vector <vector <string>> asm_code_4004;
@@ -141,6 +138,18 @@ class Translator{
 				}
 				
 			}
+			else if(t_ins[t_ins.size()-1] == ','){
+				t_ins.pop_back();
+				intel8080_file << "\n"<<t_ins<<":";
+				label_arr.push_back(t_ins);
+			}
+			else if(find(label_arr.begin(),label_arr.end(),t_ins) == label_arr.end()){
+				cerr<<"Error occured while translating the program"<<endl;
+				cerr<<t_ins<<" is not defined or not supported by the program"<<endl;
+				exit(EXIT_FAILURE);
+			}
+			else
+				intel8080_file << t_ins;
 
 			if(ins.size() > index+1){
 				if(ins[index+1][0]==';')
