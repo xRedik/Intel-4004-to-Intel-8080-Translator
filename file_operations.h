@@ -10,6 +10,14 @@ class Intel4004_file_op{
 
 	private:
 		unordered_map <string,int> umap_ins;
+		vector <string> arr_ins{
+			"nop","jcn","fim","jin","jun","jms","inc","isz",
+			"add","sub","ld","xch","bbl","ldm","wrm","wmp",
+			"wrr","wr0","wr1","wr2","wr3","sbm","rdm","rdr",
+			"adm","rd0","rd1","rd2","rd3","clb","clc","iac",
+			"cmc","cma","ral","rar","tcc","dac","tcs","stc",
+			"daa","kbp","dcl","src","fin"
+		};
 
 	public:
 		vector <vector <string>> asm_code_4004;
@@ -64,14 +72,28 @@ class Intel4004_file_op{
 				check_ins= ins[1];
 			if(check_ins[check_ins.size()-1]==',')
 				continue;
-			if(umap_ins.find(check_ins) == umap_ins.end()){
+			if(find(arr_ins.begin(),arr_ins.end(),check_ins) == arr_ins.end()){
 				cerr<<"Syntax Error: No instruction as "<<check_ins<<endl;
-				cerr<<"Failed"<<endl;
+				cout<<"Did you mean "<<help_provider(check_ins)<<"?"<<endl;
+				cerr<<"Status: Failed to translate program"<<endl;
 				exit(EXIT_FAILURE);
 			}
 		}
 	}
+
+	string help_provider(string check_ins){
+		int min = 999;
+		string close_ins;
+		for(int i=0;i<arr_ins.size();i++){
+			int equality=0;
+			for(int c=0;c<arr_ins[i].size();c++)
+				if(arr_ins[i][c]!=check_ins[c])
+					equality++;
+			if(equality<min){
+				min = equality;
+				close_ins = arr_ins[i];
+			}
+		}
+		return close_ins;
+	}
 };
-
-
-

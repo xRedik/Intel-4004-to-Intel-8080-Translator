@@ -1,5 +1,4 @@
 ldm 0
-dcl 
 
 fim 0p $00 
 fim 1p $c0
